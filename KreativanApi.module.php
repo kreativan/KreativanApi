@@ -14,7 +14,7 @@
  * 
  *  API:
  *	@method 	moduleSettings() -- chanage module settings
- 
+ *
  *  @method     setFieldOptions() -- use this method to change field option based on template
  *  @method     createRepeater() -- create Repeater field
  *  @method     createFieldsetPage() -- craete FieldsetPage field
