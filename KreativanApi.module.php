@@ -353,40 +353,7 @@ class KreativanApi extends WireData implements Module {
     public function repeaterFieldOptions($repeater_name, $field_name, $options) {
         $this->fieldOptions("repeater_$repeater_name", $field_name, $options);
     }
-
-
-    /**
-     *  addTemplateField()
-     *  Add field to a specific position in template
-     *  
-     *  @param  tmpl            string, template name
-     *  @param  new_field       string, name of the field we want to add
-     *  @param  mark_field      string, field name, we will add new field before or after this field
-     *  @param  before_after    string, before / after 
-     * 
-     */
-    public function addTemplateField($tmpl, $new_field, $mark_field, $before_after = "after") {
-
-        // get template
-        $template = $this->templates->get("$tmpl");
-
-        // get existing field from the template, 
-        // we will insert new field before or after this field
-        $existingField = $template->fieldgroup->fields->get("$mark_field");
-
-        // new field that we want to insert
-        $newField = $this->fields->get("$new_field");
-
-        // insert new field before existing one
-        if($before_after == "before") {
-            $template->fieldgroup->insertBefore($newField, $existingField);
-        } else {
-            $template->fieldgroup->insertAfter($newField, $existingField);
-        }
-
-        $template->fieldgroup->save();
-
-    }
+	
 	
 	/**
      *  Create Options Field
@@ -423,6 +390,41 @@ class KreativanApi extends WireData implements Module {
             $f->optionColumns = "1";
             $f->save();
         }
+		
+    }
+
+
+    /**
+     *  addTemplateField()
+     *  Add field to a specific position in template
+     *  
+     *  @param  tmpl            string, template name
+     *  @param  new_field       string, name of the field we want to add
+     *  @param  mark_field      string, field name, we will add new field before or after this field
+     *  @param  before_after    string, before / after 
+     * 
+     */
+    public function addTemplateField($tmpl, $new_field, $mark_field, $before_after = "after") {
+
+        // get template
+        $template = $this->templates->get("$tmpl");
+
+        // get existing field from the template, 
+        // we will insert new field before or after this field
+        $existingField = $template->fieldgroup->fields->get("$mark_field");
+
+        // new field that we want to insert
+        $newField = $this->fields->get("$new_field");
+
+        // insert new field before existing one
+        if($before_after == "before") {
+            $template->fieldgroup->insertBefore($newField, $existingField);
+        } else {
+            $template->fieldgroup->insertAfter($newField, $existingField);
+        }
+
+        $template->fieldgroup->save();
+
     }
 	
 	
