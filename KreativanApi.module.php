@@ -388,6 +388,43 @@ class KreativanApi extends WireData implements Module {
 
     }
 	
+	/**
+     *  Create Options Field
+     *  @param inputfield   string -- InputfieldRadios / InputfieldAsmSelect / InputfieldCheckboxes / InputfieldSelect / InputfieldSelectMultiple
+     *  @param name         string -- Field name
+     *  @param label        string -- field label
+     *  @param options_arr  array -- eg: ["one", "two", "three"]
+     *  @param tags         string -- Field tag
+     * 
+     */
+    public function createOptionsField($inputfield, $name, $label, $options_arr, $tags = "") {
+
+        $i = 1;
+        $options = "";
+        foreach($options_arr as $opt) {
+            $options .= $i++ . "={$opt}\n";
+        }
+        $f = new Field();
+        $f->type = $this->modules->get("FieldtypeOptions");
+        $f->inputfieldClass = $inputfield; // input type: radio, select etc...
+        $f->name = $name;
+        $f->label = $label;
+        $f->tags = $tags;
+        $f->save(); 
+        // save before adding options
+        // $options = "1=Blue\n2=Green\n3=Brown\n";
+        $set_options = new \ProcessWire\SelectableOptionManager();
+        $set_options->setOptionsString($f, $options, false);
+        $f->save();
+        // Radio options 1 column
+        if($inputfield == "InputfieldRadios") {
+            $f->required = "1";
+            $f->defaultValue = "1";
+            $f->optionColumns = "1";
+            $f->save();
+        }
+    }
+	
 	
 	/**
      *  Create Template Structure
