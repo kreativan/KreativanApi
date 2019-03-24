@@ -11,6 +11,7 @@
  *  @method     writeToFile() 
  *  @method     importLessFile() -- import less file into import.less
  *  @method     getFolders($dir)
+ *	@method		uplaodFile()
  * 
  *  API:
  *	@method 	moduleSettings() -- chanage module settings
