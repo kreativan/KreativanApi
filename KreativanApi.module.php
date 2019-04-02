@@ -14,6 +14,8 @@
  *	@method		uplaodFile()
  * 
  *  API:
+ *	@method     getFieldsetOpen() -- get fields inside Fieldset (Open)
+ 
  *	@method 	moduleSettings() -- chanage module settings
  *
  *  @method     setFieldOptions() -- use this method to change field option based on template
@@ -177,6 +179,27 @@ class KreativanApi extends WireData implements Module {
 	/* ==================================================================================
         API Methods
     ===================================================================================== */
+	
+	 /**
+      *	Get Fields inside Fieldset (Open)
+      *	@param template		str, template name
+      *	@param SET			str, Fieldset (Open) name
+      */
+    public function getFieldsetOpen($template = "", $SET = "") {
+        $tmpl = $this->templates->get($template);
+        $SET_start = false;
+        $fields_arr = [];
+        foreach($tmpl->fields as $field) {
+            if ($field->name == $SET) {
+                $SET_start = true;
+            } elseif ($field->name == "{$SET}_END") {
+                break;
+            } elseif ($SET_start == 'true') {
+                $fields_arr[] = $field;
+            }
+        }
+        return $fields_arr;
+    }
 
     /**
      *  Module Settings
