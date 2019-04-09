@@ -54,7 +54,6 @@ class KreativanApi extends WireData implements Module {
      *  @param file file path to write to.
      *  @param what what to write to the file
      *  @example writeToFile("home.php", "<h1>O Yeah!</h1>") ;
-     *
      */
     public function writeToFile($file, $what) {
         // Open the file to get existing content
@@ -66,57 +65,24 @@ class KreativanApi extends WireData implements Module {
     }
 
     /**
-     *  Import less file
-     *  Use this method to copy & include new less files to the import.less.
-     *  What we are doing here is:
-     *    - Copy new less file, from specified module folder, to "/templates/custom/less-imports/" folder.
-     *    - Write to "templates/custom/less-imports/_import.less" file: @import "my_specified_file.less";
-     *
-     *  @param src  -- where less file is located? Full path to the directory
-     *  @param file -- file name
-     *  @example -- importLessFile($config->paths->siteModules."cmsHelper/assets/", "my_file.less");
-     *
-     */
-    public function importLessFile($src, $file) {
-
-        $dest   = wire("config")->paths->templates . "custom/" . $file;
-
-        $importFile = wire("config")->paths->templates . "custom/import.less";
-        $content = file_get_contents($importFile);
-        $content .= "@import 'imports/$file';\n";
-
-        return file_put_contents($importFile, $content) . copy($src, $dest);
-
-    }
-
-    /**
-     *  clearCache()
-     *  Reload modules, compile less and clear cache
-     *
+     *  Clear AIOM cache 
+	 *	@see @method compileLess()
+	 *	Reload modules
      */
     public function clearCache() {
-
-        // delete AIOM cached css files
-        $aiom_cache = $this->config->paths->assets."aiom";
-        $aiom_cache_files = glob("$aiom_cache/*");
-        foreach($aiom_cache_files as $file) {
-            if(is_file($file))
-            unlink($file);
-        }
-
-        // add new random css prefix to avoid browser cache
-        $random_prefix = "css_".rand(10,100)."_";
-        $this->moduleSettings("AllInOneMinify", ["stylesheet_prefix" => "$random_prefix"]);
+		
+		// Compile less
+		$this->compileLess();
 
         // Refresh Modules
-
         $this->modules->refresh();
 
     }
 
     /**
-     *  compileLess()
-     * 
+     *  Clear AIOM cache
+	 *	Delete aiom cache files and change css_prefix
+	 *	to force browser to clear cache.
      */
     public function compileLess() {
 
@@ -135,7 +101,7 @@ class KreativanApi extends WireData implements Module {
 
     /**
      *  Get Folders 
-     * 
+	 *	@param dir	str, main folder name
      */
     public function getFolders($dir) {
         return array_filter(glob("{$dir}*"), 'is_dir');
@@ -148,7 +114,6 @@ class KreativanApi extends WireData implements Module {
      * 	@param file_field_name	string, name of the file field in the uplaod form
      *  @param dest             string, path to upload folder
      *  @param valid            array, allowed file extensions
-     * 
      */
     public function uplaodFile($file_field_name = "", $dest = "", $valid = ['jpg', 'jpeg', 'gif', 'png']) {
 
@@ -219,12 +184,11 @@ class KreativanApi extends WireData implements Module {
     /**
      *  Change Field Options 
      *  
-     *  @param template     string -- Template name
-     *  @param field        string -- Field Name
-     *  @param options      array -- array of options eg: ["option" => value]
+     *  @param template     string, Template name
+     *  @param field        string, Field Name
+     *  @param options      array, eg: ["option" => value]
      * 
      *  @example $this->fieldOptions("home", "text", ["label" => "My Text"]);
-     *  
      */
 
     public function fieldOptions($template, $field, $options) {
@@ -240,14 +204,13 @@ class KreativanApi extends WireData implements Module {
     /**
      *  Create Repeater
      * 
-     *  @param name         str -- The name of your repeater field
-     *  @param label        str -- The label for your repeater
-     *  @param fields       array -- Array of fields names to add to repeater
-     *  @param items_label  str -- Lable for repeater items eg: {title} 
-     *  @param tags         str -- Tags for the repeater field
+     *  @param name         str, The name of your repeater field
+     *  @param label        str, The label for your repeater
+     *  @param fields       array, Array of fields names to add to repeater eg: ["title","body","text"]
+     *  @param items_label  str, Lable for repeater items eg: {title} 
+     *  @param tags         str, Tags for the repeater field
      * 
      *  @example    $this->createRepeater("dropdown", "Dropdown", $fields_array, "{title}", "Repeaters");
-     * 
      */     
     public function createRepeater($name, $label, $fields, $items_label, $tags) {
 
@@ -306,13 +269,12 @@ class KreativanApi extends WireData implements Module {
      *  This is basically same as repeater, except it's using "FieldtypeFieldsetPage" module, and using fewer params.
      *  To change field options we can use same @method repeaterFieldOptions();
      * 
-     *  @param name         str -- The name of your repeater field
-     *  @param label        str -- The label for your repeater
-     *  @param fields       array -- Array of fields names to add to repeater
-     *  @param tags         str -- Tags for the repeater field
+     *  @param name         str,The name of your repeater field
+     *  @param label        str, The label for your repeater
+     *  @param fields       array, Array of fields names to add to repeater
+     *  @param tags         str, Tags for the repeater field
      * 
      *  @example    $this->createFieldsetPage("my_block", "My Block", $fields_array, "Blocks");
-     * 
      */     
     public function createFieldsetPage($name, $label, $fields, $tags) {
 
