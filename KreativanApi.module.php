@@ -423,6 +423,7 @@ class KreativanApi extends WireData implements Module {
      *  Page -> Subpage
      * 
      *  @param array $main  eg: ["name" => "my_template_name", "fields" => ["One", "Two", "Three"]]
+     * 
      *  ["name"]        (string) Template name    
      *  ["fields"]      (array) Template fields eg: ["One", "Two", "Three"]
      *  ["icon"]        (string) Template icon eg: fa-icon
@@ -430,6 +431,7 @@ class KreativanApi extends WireData implements Module {
      *  ["page_title"]  (string) Page title
      * 
      *  @param array $item  eg: ["name" => "my_template_name", "fields" => ["One", "Two", "Three"]];
+     * 
      *  ["name"]        (string) Template name
      *  ["fields"]      (array) Template fields eg: ["One", "Two", "Three"]
      *  ["icon"]        (string) Template icon eg: fa-icon
