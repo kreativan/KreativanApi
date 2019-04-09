@@ -15,7 +15,7 @@
  * 
  *  API:
  *	@method     getFieldsetOpen() -- get fields inside Fieldset (Open)
- 
+ *
  *	@method 	moduleSettings() -- chanage module settings
  *
  *  @method     setFieldOptions() -- use this method to change field option based on template
