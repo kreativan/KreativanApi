@@ -6,28 +6,28 @@
  *  @copyright 2019 Ivan Milincic
  * 
  *  Utility:
- *  @method     clearCache() -- clear AIOM cache reset css_ prefix and refresh modules
- *  @method     compileLess()  -- clear AIOM cache reset css_ prefix
- *  @method     writeToFile() 
- *  @method     importLessFile() -- import less file into import.less
- *  @method     getFolders($dir)
- *	@method		uplaodFile()
+ *  clearCache() -- clear AIOM cache reset css_ prefix and refresh modules
+ *  compileLess()  -- clear AIOM cache reset css_ prefix
+ *  writeToFile() 
+ *  importLessFile() -- import less file into import.less
+ *  getFolders($dir)
+ *  uplaodFile()
  * 
  *  API:
- *	@method     getFieldsetOpen() -- get fields inside Fieldset (Open)
+ *  getFieldsetOpen() -- get fields inside Fieldset (Open)
  *
- *	@method 	moduleSettings() -- chanage module settings
+ *  moduleSettings() -- chanage module settings
  *
- *  @method     setFieldOptions() -- use this method to change field option based on template
- *  @method     createRepeater() -- create Repeater field
- *  @method     createFieldsetPage() -- craete FieldsetPage field
- *  @method     setRepeaterFieldOptions() -- set field options inside a Repeater or FieldsetPage
- *  @method     createOptionsField() -- create Options field
- *	@method		addTemplateField() -- add new field to the specific position in template (before-after existing field)
+ *  setFieldOptions() -- use this method to change field option based on template
+ *  createRepeater() -- create Repeater field
+ *  createFieldsetPage() -- craete FieldsetPage field
+ *  setRepeaterFieldOptions() -- set field options inside a Repeater or FieldsetPage
+ *  createOptionsField() -- create Options field
+ *  addTemplateField() -- add new field to the specific position in template (before-after existing field)
  * 
  *  Custom:
- *  @method     createTemplateStructure() -- create Main Page -> Subpages
- *  @method     deleteTemplateStructure() -- delete pages, templates, fields
+ *  createTemplateStructure() -- create Main Page -> Subpages
+ *  deleteTemplateStructure() -- delete pages, templates, fields
  * 
 */
 
@@ -51,9 +51,10 @@ class KreativanApi extends WireData implements Module {
     /**
      *  Write To File Function
      *
-     *  @param file file path to write to.
-     *  @param what what to write to the file
+     *  @param string $file     file path to write to.
+     *  @param string $what     what to write to the file
      *  @example writeToFile("home.php", "<h1>O Yeah!</h1>") ;
+     *  @return void
      */
     public function writeToFile($file, $what) {
         // Open the file to get existing content
@@ -66,7 +67,7 @@ class KreativanApi extends WireData implements Module {
 
     /**
      *  Clear AIOM cache 
-	 *	@see @method compileLess()
+	 *	@see  compileLess()
 	 *	Reload modules
      */
     public function clearCache() {
@@ -82,7 +83,8 @@ class KreativanApi extends WireData implements Module {
     /**
      *  Clear AIOM cache
 	 *	Delete aiom cache files and change css_prefix
-	 *	to force browser to clear cache.
+     *	to force browser to clear cache.
+     *  @return void
      */
     public function compileLess() {
 
@@ -101,7 +103,8 @@ class KreativanApi extends WireData implements Module {
 
     /**
      *  Get Folders 
-	 *	@param dir	str, main folder name
+     *	@param string $dir	main folder name
+     *  @return array
      */
     public function getFolders($dir) {
         return array_filter(glob("{$dir}*"), 'is_dir');
@@ -111,9 +114,9 @@ class KreativanApi extends WireData implements Module {
     /**
      * 	Uplaod File
      * 
-     * 	@param file_field_name	string, name of the file field in the uplaod form
-     *  @param dest             string, path to upload folder
-     *  @param valid            array, allowed file extensions
+     * 	@param string $file_field_name	    name of the file field in the uplaod form
+     *  @param string $dest                 path to upload folder
+     *  @param string $valid                allowed file extensions
      */
     public function uplaodFile($file_field_name = "", $dest = "", $valid = ['jpg', 'jpeg', 'gif', 'png']) {
 
@@ -147,8 +150,9 @@ class KreativanApi extends WireData implements Module {
 	
 	 /**
       *	Get Fields inside Fieldset (Open)
-      *	@param template		str, template name
-      *	@param SET			str, Fieldset (Open) name
+      *	@param string $template		template name
+      *	@param string $SET			Fieldset (Open) name
+      * @return array
       */
     public function getFieldsetOpen($template = "", $SET = "") {
         $tmpl = $this->templates->get($template);
@@ -169,8 +173,8 @@ class KreativanApi extends WireData implements Module {
     /**
      *  Module Settings
      *  
-     *  @param module   str     module class name
-     *  @param data     array   module settings  
+     *  @param string $module     module class name
+     *  @param array $data        module settings  
      * 
      */
     public function moduleSettings($module, $data = []) {
@@ -184,9 +188,9 @@ class KreativanApi extends WireData implements Module {
     /**
      *  Change Field Options 
      *  
-     *  @param template     string, Template name
-     *  @param field        string, Field Name
-     *  @param options      array, eg: ["option" => value]
+     *  @param string $template     Template name
+     *  @param string $field        Field Name
+     *  @param array $options       eg: ["option" => value]
      * 
      *  @example $this->fieldOptions("home", "text", ["label" => "My Text"]);
      */
@@ -204,11 +208,11 @@ class KreativanApi extends WireData implements Module {
     /**
      *  Create Repeater
      * 
-     *  @param name         str, The name of your repeater field
-     *  @param label        str, The label for your repeater
-     *  @param fields       array, Array of fields names to add to repeater eg: ["title","body","text"]
-     *  @param items_label  str, Lable for repeater items eg: {title} 
-     *  @param tags         str, Tags for the repeater field
+     *  @param string $name         The name of your repeater field
+     *  @param string $label        Label for your repeater
+     *  @param string $fields       Array of fields names to add to repeater eg: ["title","body","text"]
+     *  @param string $items_label  Label for repeater items eg: {title} 
+     *  @param string $tags         Tags for the repeater field
      * 
      *  @example    $this->createRepeater("dropdown", "Dropdown", $fields_array, "{title}", "Repeaters");
      */     
@@ -267,12 +271,12 @@ class KreativanApi extends WireData implements Module {
      *  Create FieldsetPage
      * 
      *  This is basically same as repeater, except it's using "FieldtypeFieldsetPage" module, and using fewer params.
-     *  To change field options we can use same @method repeaterFieldOptions();
+     *  To change field options we can use same  repeaterFieldOptions();
      * 
-     *  @param name         str,The name of your repeater field
-     *  @param label        str, The label for your repeater
-     *  @param fields       array, Array of fields names to add to repeater
-     *  @param tags         str, Tags for the repeater field
+     *  @param string $name        The name of your repeater field
+     *  @param string $label       The label for your repeater
+     *  @param array $fields       Array of fields names to add to repeater
+     *  @param string $tags        Tags for the repeater field
      * 
      *  @example    $this->createFieldsetPage("my_block", "My Block", $fields_array, "Blocks");
      */     
@@ -328,10 +332,10 @@ class KreativanApi extends WireData implements Module {
      *  Repeater & FieldsetPage Field Options
      *  (Yep, FieldsetPage works same as Repeater)
      * 
-     *  @method fieldOptions()  Using this same method with custom params. Just because repeater template name has "repaeter_" prefix
-     *  @param  repeater_name   string -- name of the repeater field
-     *  @param  field_name      string -- name of the field
-     *  @param  options         array -- field options ["option" => "value"]
+     *  Using the same fieldOptions() method with custom params. Just because repeater template name has "repaeter_" prefix
+     *  @param string $repeater_name   name of the repeater field
+     *  @param string $field_name      name of the field
+     *  @param array $options          field options ["option" => "value"]
      *  
      *  @example $this->fieldOptions("my_repeater_name", "text", ["label" => "My Text"]);
      * 
@@ -343,11 +347,11 @@ class KreativanApi extends WireData implements Module {
 	
 	/**
      *  Create Options Field
-     *  @param inputfield   string -- InputfieldRadios / InputfieldAsmSelect / InputfieldCheckboxes / InputfieldSelect / InputfieldSelectMultiple
-     *  @param name         string -- Field name
-     *  @param label        string -- field label
-     *  @param options_arr  array -- eg: ["one", "two", "three"]
-     *  @param tags         string -- Field tag
+     *  @param string $inputfield   InputfieldRadios / InputfieldAsmSelect / InputfieldCheckboxes / InputfieldSelect / InputfieldSelectMultiple
+     *  @param string $name         Field name
+     *  @param string $label        field label
+     *  @param array $options_arr   eg: ["one", "two", "three"]
+     *  @param string $tags         Field tag
      * 
      */
     public function createOptionsField($inputfield, $name, $label, $options_arr, $tags = "") {
@@ -384,10 +388,10 @@ class KreativanApi extends WireData implements Module {
      *  addTemplateField()
      *  Add field to a specific position in template
      *  
-     *  @param  tmpl            string, template name
-     *  @param  new_field       string, name of the field we want to add
-     *  @param  mark_field      string, field name, we will add new field before or after this field
-     *  @param  before_after    string, before / after 
+     *  @param string &tmpl             template name
+     *  @param string $new_field        name of the field we want to add
+     *  @param string $mark_field       field name, we will add new field before or after this field
+     *  @param string $before_after     before / after 
      * 
      */
     public function addTemplateField($tmpl, $new_field, $mark_field, $before_after = "after") {
@@ -416,22 +420,22 @@ class KreativanApi extends WireData implements Module {
 	
 	/**
      *  Create Template Structure
-     *  @example Page -> Subpage
+     *  Page -> Subpage
      * 
-     *  @param main array -- eg: ["name" => "my_template_name", "fields" => ["One", "Two", "Three"]];
-     *  @var name string -- template name
-     *  @var fields array --  template fields
-     *  @var icon string (fa-icon) -- template icon
-     *  @var parent page id
-     *  @var page_title string
+     *  @param array $main  eg: ["name" => "my_template_name", "fields" => ["One", "Two", "Three"]]
+     *  ["name"]        (string) Template name    
+     *  ["fields"]      (array) Template fields eg: ["One", "Two", "Three"]
+     *  ["icon"]        (string) Template icon eg: fa-icon
+     *  ["parent"]      (integer) Parent page ID
+     *  ["page_title"]  (string) Page title
      * 
-     *  @param item array -- eg: ["name" => "my_template_name", "fields" => ["One", "Two", "Three"]];
-     *  @var name string -- template name
-     *  @var fields array --  template fields
-     *  @var icon string (fa-icon) -- template icon
-     *  @var page_title string
+     *  @param array $item  eg: ["name" => "my_template_name", "fields" => ["One", "Two", "Three"]];
+     *  ["name"]        (string) Template name
+     *  ["fields"]      (array) Template fields eg: ["One", "Two", "Three"]
+     *  ["icon"]        (string) Template icon eg: fa-icon
+     *  ["page_title"]  (string) Page title
      * 
-     *  @param tag string
+     *  @param string $tag Template tag
      * 
      * 
      */
@@ -518,8 +522,8 @@ class KreativanApi extends WireData implements Module {
 
     /**
      *  Delete Template Structure
-     *  @param temp_array array -- template names
-     *  @param fields_arr array -- field names
+     *  @param array $temp_array Array of template names
+     *  @param array $fields_arr Array of field names
      * 
      */
     public function deleteTemplateStructure($temp_array, $fields_arr) {
