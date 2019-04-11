@@ -6,24 +6,23 @@
  *  @copyright 2019 Ivan Milincic
  * 
  *  Utility:
- *  clearCache() -- clear AIOM cache reset css_ prefix and refresh modules
- *  compileLess()  -- clear AIOM cache reset css_ prefix
+ *  clearCache() - clear AIOM cache reset css_ prefix and refresh modules
+ *  compileLess()  - clear AIOM cache reset css_ prefix
  *  writeToFile() 
- *  importLessFile() -- import less file into import.less
  *  getFolders($dir)
  *  uplaodFile()
+ *	
+ *	Module:
+ *	moduleSettings() - chanage module settings
  * 
- *  API:
- *  getFieldsetOpen() -- get fields inside Fieldset (Open)
- *
- *  moduleSettings() -- chanage module settings
- *
- *  setFieldOptions() -- use this method to change field option based on template
- *  createRepeater() -- create Repeater field
- *  createFieldsetPage() -- craete FieldsetPage field
- *  setRepeaterFieldOptions() -- set field options inside a Repeater or FieldsetPage
- *  createOptionsField() -- create Options field
- *  addTemplateField() -- add new field to the specific position in template (before-after existing field)
+ *  Fields & Templates:
+ *  getFieldsetOpen() - get fields inside Fieldset (Open)
+ *  setFieldOptions() - use this method to change field option based on template
+ *  createRepeater() - create Repeater field
+ *  createFieldsetPage() - craete FieldsetPage field
+ *  setRepeaterFieldOptions() - set field options inside a Repeater or FieldsetPage
+ *  createOptionsField() - create Options field
+ *  addTemplateField() - add new field to the specific position in template (before-after existing field)
  * 
  *  Custom:
  *  createTemplateStructure() -- create Main Page -> Subpages
@@ -47,23 +46,6 @@ class KreativanApi extends WireData implements Module {
     /* ==================================================================================
         Utility
     ===================================================================================== */
-
-    /**
-     *  Write To File Function
-     *
-     *  @param string $file     file path to write to.
-     *  @param string $what     what to write to the file
-     *  @example writeToFile("home.php", "<h1>O Yeah!</h1>") ;
-     *  @return void
-     */
-    public function writeToFile($file, $what) {
-        // Open the file to get existing content
-        $current = file_get_contents($file);
-        // Append a new person to the file
-        $current .= $what;
-        // Write the contents back to the file
-        return file_put_contents($file, $current);
-    }
 
     /**
      *  Clear AIOM cache 
@@ -141,6 +123,23 @@ class KreativanApi extends WireData implements Module {
             $this->error($error); 
         }
 
+    }
+	
+	/**
+     *  Write To File Function
+     *
+     *  @param string $file     file path to write to.
+     *  @param string $what     what to write to the file
+     *  @example writeToFile("home.php", "<h1>O Yeah!</h1>") ;
+     *  @return void
+     */
+    public function writeToFile($file, $what) {
+        // Open the file to get existing content
+        $current = file_get_contents($file);
+        // Append a new person to the file
+        $current .= $what;
+        // Write the contents back to the file
+        return file_put_contents($file, $current);
     }
     
 	
