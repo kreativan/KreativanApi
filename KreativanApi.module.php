@@ -24,6 +24,7 @@
  *  setRepeaterFieldOptions() - set field options inside a Repeater or FieldsetPage
  *  createOptionsField() - create Options field
  *  addTemplateField() - add new field to the specific position in template (before-after existing field)
+ *	removeTemplateField() - remove ield from template
  * 
  *  Custom:
  *  createTemplateStructure() -- create Main Page -> Subpages
@@ -443,6 +444,18 @@ class KreativanApi extends WireData implements Module {
         $template->fieldgroup->save();
 
     }
+	
+	/**
+     *  Remove field from template
+     *  @param string $template - template name
+     *  @param string $field - field name
+     */
+    public function removeTemplateField($template, $field) {
+		$template = $this->templates->get($template);
+		$field = $this->fields->get($field);
+		$template->fieldgroup->remove($field);
+		$template->fieldgroup->save();
+	}
 	
 	
 	/**
