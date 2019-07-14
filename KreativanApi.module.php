@@ -592,6 +592,63 @@ class KreativanApi extends WireData implements Module {
         }
 
     }
+	
+	
+	/* =================================================================
+        Images & Files
+    ==================================================================== */
+    /**
+     *  Add images/files to the page
+     *  @param object|Page $page
+     *  @param string $field_name - images/files field name
+     *  @param array $allowed_files - this is required for WireUpload
+     *
+     */
+    public function fileToPageUpload($page, $field_name, $allowed_files = ['jpg', 'jpeg', 'gif', 'png']) {
+
+        $dest = $this->config->paths->files . $p->id . "/";
+
+        if($page->{$field_name}) {
+            // upload image
+            $upload = new WireUpload("dropzoneFiles");
+            $upload->setOverwrite(false);
+            $upload->setDestinationPath($dest);
+            $upload->setValidExtensions($allowed_files);
+            $upload->execute();
+            $page->of(false);
+            foreach($upload->execute() as $filename) $page->{$field_name}->add($dest . $filename);
+            $page->save();
+        } else {
+
+            throw new WireException("File/image field name doesn't exists");
+
+        }
+
+    }
+
+    /**
+     *  Delete image/file from a page
+     *  @param object|Page $page
+     *  @param string $field_name - images/files field name
+     *  @param string $file_name - image/file basename
+     *
+     */
+    public function deletePageFile($page, $field_name, $file_name) {
+
+        if(empty($page) && !empty($page->{$field_name})) {
+
+            $this_file = $page->{$field_name}->get("name=$file_name");
+
+            if($this_file && $this_file != "") {
+                $page->of(false);
+                if($page->{$field_name}->count == 1) $page->{$field_name}->removeAll();
+                if(!empty($this_file && $this_file != "")) $page->{$field_name}->delete($this_file);
+                $page->save();
+            }
+
+        }
+
+    }
 
 
 }
