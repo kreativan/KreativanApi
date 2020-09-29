@@ -633,6 +633,67 @@ class KreativanApi extends WireData implements Module {
         }
 
     }
+		
+	/* =================================================================
+    Hanna Code
+  ==================================================================== */
+  // Check if hanna code already exists, by name
+  public function isHannaCodeExists($name) {
+    $query = $this->database->prepare("SELECT COUNT(*) FROM hanna_code WHERE name=:name");
+		$query->bindValue(':name', $name);
+		$query->execute();
+		list($n) = $query->fetch(PDO::FETCH_NUM);
+    return ($n > 0) ? true : false;
+  }
+
+  /**
+   *  Import hanna code
+   *  @param string $code - hanna import/export code
+   */
+  public function importHannaCode($code) {
+
+    if(!$modules->isInstalled("TextformatterHannaCode")) {
+      $this->error("HannaCode is not installed");
+      return false;
+    }
+
+    $data = $code;
+		if(!preg_match('{!HannaCode:([^:]+):(.*?)/!HannaCode}s', $data, $matches)) throw new WireException("Unrecognized Hanna Code format");
+    $name = $matches[1];
+		$data = $matches[2];
+		$data = base64_decode($data);
+    if($data === false) throw new WireException("Failed to base64 decode import data");
+		$data = json_decode($data, true);
+		if($data === false) throw new WireException("Failed to json decode import data");
+		if(empty($data['name']) || empty($data['code'])) throw new WireException("Import data does not contain all required fields");
+
+    // db
+    $query = $this->database->prepare("SELECT COUNT(*) FROM hanna_code WHERE name=:name");
+		$query->bindValue(':name', $name);
+		$query->execute();
+		list($n) = $query->fetch(PDO::FETCH_NUM);
+		if($n > 0) {
+			$this->error($this->_('Hanna Code with that name already exists'));
+			$this->session->redirect('../');
+			return '';
+		}
+
+    $data['type'] = (int) $data['type'];
+	  $sql = 	"INSERT INTO hanna_code SET `name`=:name, `type`=:type, `code`=:code, `modified`=:modified";
+		$query = $this->database->prepare($sql);
+		$query->bindValue(':name', $name);
+		$query->bindValue(':type', $data['type']);
+		$query->bindValue(':code', $data['code']);
+		$query->bindValue(':modified', time());
+
+    if($query->execute()) {
+			$this->message("Imported Hanna Code: $name");
+			$id = (int) $this->database->lastInsertId();
+		} else {
+			throw new WireException("Error importing (database insert)");
+		}
+		return '';
+  }
 
 
 }
